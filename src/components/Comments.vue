@@ -23,7 +23,7 @@
                   </div>
                   <div class="media-content">
                     <h1 class="name-profile-header">{{post.username}}</h1>               
-                    <p> 4 <span class="icon is-small"><i class="fa fa-star" aria-hidden="true"></i></span></p>
+                    <p> {{getRait}} <span class="icon is-small"><i class="fa fa-star" aria-hidden="true"></i></span></p>
                   </div>
                 </div>
               </section>
@@ -113,6 +113,7 @@ export default {
   props: ['id', 'posts', 'addComment', 'profile', 'login', 'authorized'],
   data () {
     return {
+      aver: 0,
       count: 0,
       textComment: '',
       maxlength: 250,
@@ -136,6 +137,7 @@ export default {
       } else {
         this.addComment(this.id, newComment)
         this.textComment = ''
+        this.rating = 0
       }
     },
     loginForComment () {

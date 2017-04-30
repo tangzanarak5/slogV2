@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <!--Card-->
+    <!--Card-->>\
     <div v-for="post in postsFeed">
       <div class="container container-card" v-if="(post.brand+' '+post.model+' '+post.description).toUpperCase().indexOf(Search.toUpperCase()) > -1">
         <div class="card">
@@ -51,6 +51,7 @@ export default {
   },
   computed: {
     postsFeed () {
+      console.log(this.posts)
       return this.posts.reverse()
     }
   }
