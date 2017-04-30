@@ -12,7 +12,7 @@
             <div class="column is-two-thirds" id="image-post">
               <img :src="post.photoShose" alt="Image">
             </div>
-            
+
             <div class="column is-one-third">
               <section class="section section-header">
                 <div class="media" style="padding: 16px;">
@@ -23,7 +23,7 @@
                   </div>
                   <div class="media-content">
                     <h1 class="name-profile-header">{{post.username}}</h1>               
-                    <p> 3.5 <span class="icon is-small"><i class="fa fa-star" aria-hidden="true"></i></span></p>
+                    <p> 4 <span class="icon is-small"><i class="fa fa-star" aria-hidden="true"></i></span></p>
                   </div>
                 </div>
               </section>
@@ -52,12 +52,12 @@
                         </figure>
                       </div>
                       <div class="media-content columns">
-                        <div class="content column is-12">
+                        <div class="content column is-8">
                           <p>
                             <span class="name-profile">{{comment.username}}</span>
                             <nav class="level is-mobile">
                               <div class="level-left">
-                                <star-rating :increment="0.5" :read-only="true" :star-size="20" :rating="3.5"></star-rating>
+                                <star-rating :increment="0.5" :read-only="true" :star-size="20" :rating="comment.rating"></star-rating>
                               </div>
                             </nav>
                             <br>
@@ -84,10 +84,10 @@
                 </div>
                 <div class="field is-grouped" style="float: right;">
                   <p class="control">
-                    <star-rating :increment="0.5" :star-size="20" :rating="0"></star-rating>
+                    <star-rating :increment="0.5" :star-size="20" v-model="rating" :rating='0'></star-rating>
                   </p>
                   <p class="control">
-                    <a class="button is-info is-outlined send-btn" @click="comment">Send</a>
+                    <a class="button is-info is-outlined send-btn" @click="comment($event)">Send</a>
                   </p>
                 </div>
               </section>
@@ -113,23 +113,30 @@ export default {
   props: ['id', 'posts', 'addComment', 'profile', 'login', 'authorized'],
   data () {
     return {
+      count: 0,
       textComment: '',
       maxlength: 250,
-      rating: 'No Rating Selected',
+      rating: 0,
       currentRating: 'No Rating',
       currentSelectedRating: 'No Current Rating',
       boundRating: 3
     }
   },
   methods: {
-    comment () {
+    comment (e) {
       var newComment = {
         photoUser: this.profile.photoURL,
         username: this.profile.displayName,
-        comment: this.textComment
+        comment: this.textComment,
+        rating: this.rating
       }
-      this.addComment(this.id, newComment)
-      this.textComment = ''
+      if (this.textComment === '') {
+        alert('Please fill in all information.')
+        e.preventDefault()
+      } else {
+        this.addComment(this.id, newComment)
+        this.textComment = ''
+      }
     },
     loginForComment () {
       this.login()

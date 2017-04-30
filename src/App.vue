@@ -102,7 +102,8 @@ export default {
       vm.$firebaseRefs.comments.push({
         photoUser: newComment.photoUser,
         username: newComment.username,
-        comment: newComment.comment
+        comment: newComment.comment,
+        rating: newComment.rating
       })
     },
     login () {
