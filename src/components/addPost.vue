@@ -1,18 +1,37 @@
 <template>
-  <div class="">
-    Post
+  <div class="container">
     <div class="">
-      <img id="blah" src="" alt="your image" />
-      <input type="file" @change="onFileChange"><br>
-      brand
-      <input type="radio" value="Nike" name="brand" @click="changeValue('Nike')" checked>
-      <label for="Nike">Nike</label>
-      <input type="radio" value="Adidas" name="brand" @click="changeValue('Adidas')">
-      <label for="Adidas">Adidas</label><br>
-      <label for="model">model</label> <input type="text" v-model="model"><br>
-      Someting about photo<br>
-      <textarea name="name" v-model="description" rows="8" cols="80"></textarea><br>
-      <router-link to="/" ><button type="button" @click="addPostToApp">add</button></router-link><br><br><br>
+      <div id="image-preview">
+        <input type="file" name="image" id="image-upload" @change="onFileChange"/>
+        <label for="image-upload" id="image-label" >Choose File</label>
+        <img id="blah" src="" alt="your image" v-show="file != ''"/>
+      </div>
+
+      <div class="field">
+        <label class="label">Brand</label>
+        <p class="control">
+          <input class="input" type="text" placeholder="Brand" v-model="brand">
+        </p>
+      </div>
+      <div class="field">
+        <label class="label">Model</label>
+        <p class="control">
+          <input class="input" type="text" placeholder="Model" v-model="model">
+        </p>
+      </div>
+      <div class="field">
+        <label class="label">Message</label>
+        <p class="control">
+          <textarea v-model="description" rows="2" cols="80" placeholder="Someting about photo"></textarea>
+        </p>
+      </div>
+      <div class="field is-grouped">
+        <p class="control">
+          <router-link to="/">
+            <button class="button is-success is-outlined" @click="addPostToApp($event)">Submit</button>
+          </router-link>
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -25,21 +44,19 @@ export default {
   data () {
     return {
       description: '',
-      brand: 'Nike',
+      brand: '',
       model: '',
       file: '',
       comments: [
         {
           comment: ' '
         }
-      ]
+      ],
+      otherBrand: ''
     }
   },
   methods: {
-    changeValue (val) {
-      this.brand = val
-    },
-    addPostToApp () {
+    addPostToApp (e) {
       var newPost = {
         username: this.profile.displayName,
         photoUser: this.profile.photoURL,
@@ -48,10 +65,15 @@ export default {
         model: this.model,
         brand: this.brand
       }
-      this.addPost(newPost, this.file)
-      this.model = ''
-      this.description = ''
-      this.file = ''
+      if (this.file === '' || this.model === '' || this.brand === '') {
+        alert('Please fill in all information.')
+        e.preventDefault()
+      } else {
+        this.addPost(newPost, this.file)
+        this.model = ''
+        this.description = ''
+        this.file = ''
+      }
     },
     onFileChange (e) {
       var files = e.target.files
@@ -67,3 +89,47 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+<style type="text/css">
+.container {
+  width: 40%;
+  text-align: left;
+}
+.container textarea {
+  width: 100%;
+  resize: vertical;
+}
+#image-preview {
+  width: 400px;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+  background-color: #efefef;
+  color: #ecf0f1;
+  margin: auto;
+}
+#image-preview input {
+  line-height: 400px;
+  font-size: 400px;
+  position: absolute;
+  opacity: 0;
+  z-index: 10;
+}
+#image-preview label {
+  position: absolute;
+  z-index: 5;
+  opacity: 0.8;
+  cursor: pointer;
+  background-color: #bdc3c7;
+  width: 200px;
+  height: 50px;
+  font-size: 20px;
+  line-height: 50px;
+  text-transform: uppercase;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  text-align: center;
+}
+</style>
